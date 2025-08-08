@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Upload</title></head>
+<body>
+  <h1>Upload Book & Cover</h1>
+  <form method="POST" action="/upload" enctype="multipart/form-data">
+    <label>Book (PDF): <input type="file" name="book" accept="application/pdf" required></label><br><br>
+    <label>Cover (Image): <input type="file" name="cover" accept="image/*" required></label><br><br>
+    <button type="submit">Upload</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Book</title>
+</head>
+<body>
+  <h1>Edit a Book</h1>
+  <form id="editForm">
+    <label>Book ID: <input type="text" name="id" required /></label><br /><br />
+    <label>Title: <input type="text" name="title" required /></label><br /><br />
+    <label>Author: <input type="text" name="author" required /></label><br /><br />
+    <label>Category: <input type="text" name="category" required /></label><br /><br />
+    <label>Published Year: <input type="number" name="publishedYear" required /></label><br /><br />
+    <button type="submit">Update Book</button>
+  </form>
+
+  <script>
+  const form = document.getElementById('editForm');
+  const urlParams = new URLSearchParams(window.location.search);
+  const bookId = urlParams.get('id');
+
+  // 🧠 If there's an ID in the URL, fetch the book and pre-fill form
+  if (bookId) {
+    fetch(`http://localhost:5000/books/${bookId}`)
+      .then(res => res.json())
+      .then(book => {
+        form.elements['id'].value = bookId;
+        form.elements['title'].value = book.title;
+        form.elements['author'].value = book.author;
+        form.elements['category'].value = book.category;
+        form.elements['publishedYear'].value = book.publishedYear;
+      });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const id = formData.get('id'); // book ID
+    const book = {
+      title: formData.get('title'),
+      author: formData.get('author'),
+      category: formData.get('category'),
+      publishedYear: Number(formData.get('publishedYear'))
+    };
+
+    const response = await fetch(`http://localhost:5000/books/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(book)
+    });
+
+    const result = await response.json();
+    alert('Book updated: ' + JSON.stringify(result));
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
