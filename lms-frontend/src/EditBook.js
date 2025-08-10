@@ -7,39 +7,44 @@ function EditBook() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Define the API URL using an environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   // Fetch the book's current data when the page loads
   useEffect(() => {
     const fetchBook = async () => {
-      const response = await fetch(`http://localhost:5000/api/books/${id}`);
+      // The GET request for a single book is public, so no token is needed
+      const response = await fetch(`${API_URL}/api/books/${id}`);
       const data = await response.json();
       setBook(data);
     };
     fetchBook();
-  }, [id]);
+  }, [id, API_URL]);
 
-  // --- THIS IS THE NEW PART ---
   // Function to send the updated data to the backend
   const handleUpdate = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token'); // Get the token from storage
+
     try {
-      const response = await fetch(`http://localhost:5000/api/books/${id}`, {
-        method: 'PUT', // Use the PUT method for updates
+      const response = await fetch(`${API_URL}/api/books/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          // Add the Authorization header to prove the user is an admin
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(book), // Send the updated book state
+        body: JSON.stringify(book),
       });
 
       if (!response.ok) {
         throw new Error('Failed to update book');
       }
-
-      // On success, navigate back to the dashboard
+      
       navigate('/dashboard');
 
     } catch (error) {
       console.error('Error updating book:', error);
-      // You could show an error message to the user here
     }
   };
 
