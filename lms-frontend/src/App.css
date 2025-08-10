@@ -1,0 +1,112 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 324px;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #21a1f1;
+}
+
+.message {
+  margin-top: 20px;
+  color: #61dafb;
+}
+
+.book-list {
+  margin-top: 30px;
+  width: 80%;
+  max-width: 800px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #444;
+}
+
+.delete-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+  padding: 8px 12px;
+  width: auto; /* Override the default button width */
+}
+
+.delete-btn:hover {
+  background-color: #da190b;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 10px; /* Adds space between buttons */
+}
+
+.edit-btn {
+  background-color: #ff9800; /* Orange */
+  color: white;
+  padding: 8px 12px;
+  width: auto;
+}
+
+.edit-btn:hover {
+  background-color: #e68a00;
+}
+
+.dashboard-actions {
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: #45a049;
+}

@@ -1,25 +1,64 @@
-// routes/userRoutes.js
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Register route
+const router = express.Router();
+
+// --- REGISTER A NEW USER ---
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
-    // check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(409).json({ message: 'User already exists' });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
-
-    await newUser.save();
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+    user = new User({ name, email, password });
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    await user.save();
     res.status(201).json({ message: 'User registered successfully' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error(error.message);
+    // FIX: Send JSON instead of plain text
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// --- LOGIN USER ---
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+  } catch (error) {
+    console.error(error.message);
+    // FIX: Send JSON instead of plain text
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
