@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Book = require('../models/Book');
+const Book = require('../models/Book.js');
 const { protect, isAdmin } = require('../middleware/authMiddleware'); // 1. Import the middleware
 
 // --- PUBLIC ROUTE ---
