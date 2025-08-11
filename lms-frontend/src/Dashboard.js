@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // 1. Import useCallback
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
@@ -9,30 +9,12 @@ function Dashboard() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-
-  // 1. Define the API URL using an environment variable
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decodedUser = jwtDecode(token);
-        setUser(decodedUser.user);
-        fetchBooks();
-      } catch (err) {
-        console.error("Invalid token:", err);
-        navigate('/login');
-      }
-    } else {
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  const fetchBooks = async () => {
+  // 2. Wrap fetchBooks in useCallback to prevent re-creation on every render
+  const fetchBooks = useCallback(async () => {
     try {
       setLoading(true);
-      // 2. Use the API_URL variable here
       const response = await fetch(`${API_URL}/api/books`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
@@ -42,12 +24,26 @@ function Dashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL]); // useCallback dependency array
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedUser = jwtDecode(token);
+        setUser(decodedUser.user);
+        fetchBooks();
+      } catch (err) {
+        navigate('/login');
+      }
+    } else {
+      navigate('/login');
+    }
+  }, [navigate, fetchBooks]); // 3. Add fetchBooks to the dependency array
 
   const handleDelete = async (bookId) => {
     const token = localStorage.getItem('token');
     try {
-      // 3. And also use the API_URL variable here
       const response = await fetch(`${API_URL}/api/books/${bookId}`, {
         method: 'DELETE',
         headers: {
@@ -75,7 +71,6 @@ function Dashboard() {
       <header className="App-header">
         <h1>Library Dashboard</h1>
         <button onClick={handleLogout} className="logout-btn">Logout</button>
-
         {user.role === 'admin' && (
           <div className="dashboard-actions">
             <Link to="/add-book">
@@ -83,9 +78,7 @@ function Dashboard() {
             </Link>
           </div>
         )}
-
         <p>Welcome! Here are the books available in the library.</p>
-
         <div className="book-list">
           {loading && <p>Loading books...</p>}
           {error && <p style={{ color: 'red' }}>Error: {error}</p>}
