@@ -2,11 +2,13 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.js');
+const { protect, isAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // --- REGISTER A NEW USER ---
 router.post('/register', async (req, res) => {
+  // ... your existing register logic ...
   try {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
@@ -20,32 +22,29 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     console.error(error.message);
-    // FIX: Send JSON instead of plain text
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 // --- LOGIN USER ---
 router.post('/login', async (req, res) => {
+  // ... your existing login logic ...
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-
     const payload = {
       user: {
         id: user.id,
         role: user.role,
       },
     };
-
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
@@ -57,7 +56,17 @@ router.post('/login', async (req, res) => {
     );
   } catch (error) {
     console.error(error.message);
-    // FIX: Send JSON instead of plain text
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// --- ADD THIS ROUTE ---
+// GET all users (Admin only)
+router.get('/', protect, isAdmin, async (req, res) => {
+  try {
+    const users = await User.find({}).select('-password');
+    res.json(users);
+  } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 });

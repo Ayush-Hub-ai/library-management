@@ -1,4 +1,5 @@
-import React, { useState } from 'react'; // <-- THIS LINE IS FIXED
+// src/Login.js
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
 
@@ -30,21 +31,37 @@ function Login() {
   };
 
   return (
-    // ... Your existing JSX form ...
-    <div className="App">
-      <header className="App-header">
+    <div className="page-container">
+      <div className="form-container">
         <h2>Library Management Login</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
-            <input type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" className="login-btn">Login</button>
         </form>
         {message && <p className="message">{message}</p>}
-      </header>
+        
+        {/* --- THIS IS THE UPDATED SECTION --- */}
+        <div className="contact-section">
+          <a href="mailto:ayushrounak717@gmail.com" className="contact-btn">Contact Admin</a>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,112 +1,169 @@
-.App {
+/* src/App.css */
+
+/* --- Global Styles & Background --- */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  /* New Background Image with a dark overlay */
+  background: linear-gradient(rgba(26, 26, 46, 0.9), rgba(26, 26, 46, 0.9)), url('https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg');
+  background-size: cover;
+  background-position: center;
+  color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* --- Container for Login, Dashboard etc. --- */
+.page-container {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  width: 90%;
+  max-width: 900px; /* Wider for dashboard */
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.page-container h1, .page-container h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* --- Form Specific Styles --- */
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 input {
-  padding: 10px;
+  width: 100%;
+  padding: 15px;
   font-size: 16px;
-  width: 300px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus {
+  border-color: #00aaff;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+}
+
+/* --- Button Styles --- */
 button {
-  padding: 10px 20px;
-  font-size: 16px;
-  width: 324px;
-  background-color: #61dafb;
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #21a1f1;
+.login-btn {
+  background: linear-gradient(45deg, #00aaff, #0077cc);
+  color: #fff;
 }
-
-.message {
-  margin-top: 20px;
-  color: #61dafb;
+.login-btn:hover {
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.7);
+  transform: translateY(-2px);
 }
-
-.book-list {
+.login-footer {
   margin-top: 30px;
-  width: 80%;
-  max-width: 800px;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.login-footer a {
+  color: #00aaff;
+  text-decoration: none;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
+.login-footer a:hover {
+  text-decoration: underline;
 }
 
-th {
-  background-color: #4CAF50;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #444;
-}
-
-.delete-btn {
-  background-color: #f44336; /* Red */
-  color: white;
-  padding: 8px 12px;
-  width: auto; /* Override the default button width */
-}
-
-.delete-btn:hover {
-  background-color: #da190b;
-}
-
-.actions-cell {
-  display: flex;
-  gap: 10px; /* Adds space between buttons */
-}
-
-.edit-btn {
-  background-color: #ff9800; /* Orange */
-  color: white;
-  padding: 8px 12px;
-  width: auto;
-}
-
-.edit-btn:hover {
-  background-color: #e68a00;
-}
-
+/* --- Dashboard Specific Styles --- */
 .dashboard-actions {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
-.add-btn {
-  background-color: #4CAF50; /* Green */
+.add-btn { background-color: #4CAF50; color: white; width: auto; padding: 10px 20px; }
+.add-btn:hover { background-color: #45a049; }
+
+.logout-btn { background-color: #6c757d; color: white; width: auto; padding: 10px 20px; position: absolute; top: 20px; right: 20px;}
+.logout-btn:hover { background-color: #5a6268; }
+
+.book-list { margin-top: 30px; }
+table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); }
+th, td { border: 1px solid rgba(255,255,255,0.2); padding: 12px; text-align: left; }
+th { background-color: rgba(0, 170, 255, 0.3); color: white; }
+tr:nth-child(even) { background-color: rgba(0,0,0,0.3); }
+
+.actions-cell { display: flex; gap: 10px; }
+.edit-btn { background-color: #ff9800; color: white; width: auto; padding: 8px 12px; }
+.edit-btn:hover { background-color: #e68a00; }
+.delete-btn { background-color: #f44336; color: white; width: auto; padding: 8px 12px; }
+.delete-btn:hover { background-color: #da190b; }
+
+.message { margin-top: 20px; color: #00aaff; font-weight: bold; }
+
+.contact-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #6c757d; /* Grey color */
   color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-.add-btn:hover {
-  background-color: #45a049;
+.contact-btn:hover {
+  background-color: #5a6268;
 }
+
+.issue-btn {
+  background-color: #0d6efd; /* Blue */
+  color: white;
+  width: auto;
+  padding: 8px 12px;
+}
+.issue-btn:hover {
+  background-color: #0b5ed7;
+}
+
+.return-btn {
+  background-color: #198754; /* Green */
+  color: white;
+  width: auto;
+  padding: 8px 12px;
+}
+.return-btn:hover {
+  background-color: #157347;
+}
+
